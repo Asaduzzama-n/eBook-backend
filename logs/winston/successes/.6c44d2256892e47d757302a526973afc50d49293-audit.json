@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\.6c44d2256892e47d757302a526973afc50d49293-audit.json",
+    "files": [
+        {
+            "date": 1691088365933,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-08-04-00-success.log",
+            "hash": "65db8c49a6974f3b267c0ed2d89cb38531eef5b9eae8f3b6480db2024918e66d"
+        }
+    ],
+    "hashType": "sha256"
+}

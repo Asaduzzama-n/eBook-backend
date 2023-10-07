@@ -4,6 +4,7 @@ import { IUser, UserModel } from './user.interface';
 export const userSchema = new Schema<IUser>(
   {
     name: {
+      _id: false,
       type: {
         firstName: {
           type: String,

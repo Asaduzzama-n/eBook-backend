@@ -39,6 +39,11 @@
             "date": 1696698014075,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-07-23-success.log",
             "hash": "7122b284d98948f859d4fd919bc867bed3a0a3c3745d5a6c105766ca5f245fd4"
+        },
+        {
+            "date": 1696701869994,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-08-00-success.log",
+            "hash": "9d5cb1dc711b7e87a53cbbf6e0cfa881ff8a58f75f17ab9a1f20d0f0ea4cdf81"
         }
     ],
     "hashType": "sha256"

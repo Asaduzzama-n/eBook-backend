@@ -5,19 +5,19 @@ import validateRequest from '../../middleware/validateRequest';
 
 const router = express.Router();
 
-// router.get('/:id', AuthorController.getSingleBook);
-// router.patch(
-//   '/:id',
-//   validateRequest(AuthorValidation.updateAuthorZodSchema),
-//   AuthorController.updateAuthor,
-// );
-// router.delete('/:id', AuthorController.deleteBook);
+router.get('/:id', AuthorController.getSingleAuthor);
+router.patch(
+  '/:id',
+  validateRequest(AuthorValidation.updateAuthorZodSchema),
+  AuthorController.updateAuthor,
+);
+router.delete('/:id', AuthorController.deleteAuthor);
 
 router.post(
   '/',
   validateRequest(AuthorValidation.createAuthorZodSchema),
   AuthorController.createAuthor,
 );
-// router.get('/', AuthorController.getAllBooks);
+router.get('/', AuthorController.getAllAuthor);
 
 export const AuthorRoutes = router;

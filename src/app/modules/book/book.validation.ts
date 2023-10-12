@@ -5,12 +5,12 @@ const createBookZodSchema = z.object({
     title: z.string({ required_error: 'Title is required!' }),
     ebookId: z.string({ required_error: 'EbookId is Required!' }),
     isbn: z.string({ required_error: 'ISBN is Required!' }),
-    author: z.array(
-      z.object({
-        name: z.string({ required_error: 'Author name is Required!' }),
-      }),
-    ),
-    genre: z.string({ required_error: 'Genre is Required!' }),
+    author: z.object({
+      author1: z.string({ required_error: 'Author required!' }),
+      author2: z.string().optional(),
+      author3: z.string().optional(),
+    }),
+    category: z.string({ required_error: 'Category is Required!' }),
     publicationYear: z.string({
       required_error: 'Publication year is Required!',
     }),
@@ -24,14 +24,13 @@ const updateBookZodSchema = z.object({
   ebookId: z.string().optional(),
   isbn: z.string().optional(),
   author: z
-    .array(
-      z.object({
-        name: z.string(),
-      }),
-    )
-    .min(1)
+    .object({
+      author1: z.string().optional(),
+      author2: z.string().optional(),
+      author3: z.string().optional(),
+    })
     .optional(),
-  genre: z.string().optional(),
+  category: z.string().optional(),
   publisher: z
     .object({
       name: z.string().optional(),

@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { BookModel, IBook, bookAuthor, bookPublisher } from './book.interface';
+import { EbookModel, IEbook } from './book.interface';
 
-const bookSchema = new Schema<IBook>(
+const bookSchema = new Schema<IEbook>(
   {
     title: {
       type: String,
@@ -17,15 +17,22 @@ const bookSchema = new Schema<IBook>(
       unique: true,
     },
     author: {
-      type: [
-        {
-          _id: false,
-          name: String,
+      _id: false,
+      type: {
+        author1: {
+          type: Schema.Types.ObjectId,
+          required: true,
         },
-      ],
+        author2: {
+          type: Schema.Types.ObjectId,
+        },
+        author3: {
+          type: Schema.Types.ObjectId,
+        },
+      },
       required: true,
     },
-    genre: {
+    category: {
       type: String,
       required: true,
     },
@@ -64,4 +71,4 @@ const bookSchema = new Schema<IBook>(
   },
 );
 
-export const Book = model<IBook, BookModel>('Book', bookSchema);
+export const Ebook = model<IEbook, EbookModel>('Book', bookSchema);

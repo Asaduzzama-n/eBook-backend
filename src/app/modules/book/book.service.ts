@@ -5,8 +5,10 @@ import ApiError from '../../../errors/ApiError';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { paginationHelpers } from '../../../helper/paginationHelper';
 import { bookFilterableFields } from './book.constants';
-import { SortOrder } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 import { IGenericResponse } from '../../../interfaces/common';
+import { EbookContent } from '../bookContent/bookContent.model';
+import { IEbookContent } from '../bookContent/bookContent.interface';
 
 const getAllBooks = async (
   filters: Partial<IEbookFilters>,
@@ -120,12 +122,49 @@ const updateBook = async (
   return result;
 };
 
-const createBook = async (payload: IEbook): Promise<IEbook | null> => {
-  const createdBook = await Ebook.create(payload);
-  if (!createdBook) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Book!');
+const createBook = async (
+  eBookContent: IEbookContent,
+  eBookInfo: IEbook,
+): Promise<IEbook | null> => {
+  let newBookAllData = null;
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+    const newBookContent = await EbookContent.create([eBookContent], {
+      session,
+    });
+
+    if (!newBookContent.length) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'Failed to create book content!',
+      );
+    }
+
+    eBookInfo.ebookId = newBookContent[0]?._id;
+    const newBook = await Ebook.create([eBookInfo], { session });
+
+    if (!newBook.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create book!');
+    }
+    newBookAllData = newBook[0];
+
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
   }
-  return createdBook;
+
+  if (newBookAllData) {
+    newBookAllData = await Ebook.findOne({ _id: newBookAllData.id }).populate(
+      'ebookId',
+    );
+  }
+
+  return newBookAllData;
 };
 
 const deleteBook = async (id: string): Promise<IEbook | null> => {
@@ -133,11 +172,33 @@ const deleteBook = async (id: string): Promise<IEbook | null> => {
   if (!isExist) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Book not found!');
   }
-  const deletedBook = await Ebook.findOneAndDelete({ _id: id });
-  if (!deletedBook) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Book deleted successfully!');
+  let result;
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const deleteBookContent = await EbookContent.findOneAndDelete(
+      { _id: isExist.ebookId },
+      { session },
+    );
+    if (!deleteBookContent) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'Filed to delete book content!',
+      );
+    }
+    result = await Ebook.findOneAndDelete({ _id: id }, { session });
+    if (!result) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete book!');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
   }
-  return deletedBook;
+  return result;
 };
 
 export const BookService = {

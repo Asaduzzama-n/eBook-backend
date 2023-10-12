@@ -1,3 +1,4 @@
+import { IEbookContent } from './../bookContent/bookContent.interface';
 import { Schema, model } from 'mongoose';
 import { EbookModel, IEbook } from './book.interface';
 
@@ -8,13 +9,17 @@ const bookSchema = new Schema<IEbook>(
       required: true,
     },
     ebookId: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'EbookContent',
     },
     isbn: {
       type: String,
       required: true,
       unique: true,
+    },
+    bookDescription: {
+      type: String,
+      required: true,
     },
     author: {
       _id: false,

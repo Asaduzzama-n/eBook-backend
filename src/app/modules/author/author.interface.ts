@@ -17,7 +17,6 @@ export type AuthorModel = Model<IAuthor>;
 
 export type IAuthorFilters = {
   searchTerm?: string;
-  id?: string;
   email?: string;
   address?: string;
 };

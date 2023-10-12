@@ -53,6 +53,9 @@ const getAllBooks = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
   const result = await Ebook.find(whereConditions)
+    .populate('author.author1')
+    .populate('author.author2')
+    .populate('author.author3')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
@@ -69,7 +72,10 @@ const getAllBooks = async (
 };
 
 const getSingleBook = async (id: string): Promise<IEbook | null> => {
-  const retrievedBook = await Ebook.findOne({ _id: id });
+  const retrievedBook = await Ebook.findOne({ _id: id })
+    .populate('author.author1')
+    .populate('author.author2')
+    .populate('author.author3');
   if (!retrievedBook) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Book not found!');
   }
@@ -141,3 +147,7 @@ export const BookService = {
   updateBook,
   getAllBooks,
 };
+
+//6527c6087c07ca33ef5781fb
+//65282643602977a9bbbab138
+//6528264e602977a9bbbab13a

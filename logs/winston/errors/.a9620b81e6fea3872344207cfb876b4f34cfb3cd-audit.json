@@ -84,6 +84,11 @@
             "date": 1697101767443,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2023-10-12-15-error.log",
             "hash": "b891e9269c605dcd1a63bad178f66ae5822ccaa057f956fd1adb61a9acf797a1"
+        },
+        {
+            "date": 1697104928121,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2023-10-12-16-error.log",
+            "hash": "39b857cb5da376dea588c631c69ae33930b3be04516bb9b87f5cffebc72de862"
         }
     ],
     "hashType": "sha256"

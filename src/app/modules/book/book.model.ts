@@ -22,12 +22,15 @@ const bookSchema = new Schema<IEbook>(
         author1: {
           type: Schema.Types.ObjectId,
           required: true,
+          ref: 'Author',
         },
         author2: {
           type: Schema.Types.ObjectId,
+          ref: 'Author',
         },
         author3: {
           type: Schema.Types.ObjectId,
+          ref: 'Author',
         },
       },
       required: true,

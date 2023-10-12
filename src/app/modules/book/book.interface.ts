@@ -1,4 +1,5 @@
 import { Model, Types } from 'mongoose';
+import { IEbookContent } from '../bookContent/bookContent.interface';
 
 export type bookAuthor = {
   author1: Types.ObjectId;
@@ -11,8 +12,9 @@ export type bookPublisher = {
 };
 export type IEbook = {
   title: string;
-  ebookId: string;
+  ebookId?: Types.ObjectId | IEbookContent;
   isbn: string;
+  bookDescription: string;
   author: bookAuthor;
   category: string;
   publicationYear: string;

@@ -1,3 +1,4 @@
+import { EbookContent } from './../bookContent/bookContent.model';
 import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
@@ -48,9 +49,9 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
-  const { ...bookData } = req.body;
+  const { eBookContent, eBookInfo } = req.body;
 
-  const result = await BookService.createBook(bookData);
+  const result = await BookService.createBook(eBookContent, eBookInfo);
 
   sendResponse<IEbook>(res, {
     statusCode: httpStatus.OK,

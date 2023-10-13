@@ -49,7 +49,7 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
-  const { eBookContent, eBookInfo } = req.body;
+  const { eBookContent, ...eBookInfo } = req.body;
 
   const result = await BookService.createBook(eBookContent, eBookInfo);
 

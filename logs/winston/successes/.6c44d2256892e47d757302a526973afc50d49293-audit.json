@@ -134,6 +134,31 @@
             "date": 1697174749686,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-13-11-success.log",
             "hash": "2eb3d0372d68150fa47bbc8ec955b449f843fbeaf600610a80116c10ebcdfdea"
+        },
+        {
+            "date": 1697178830121,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-13-12-success.log",
+            "hash": "1b650218f8cb297f5414a1d6b878d38feeb639b7d4c1a6fdd2ce054912b37569"
+        },
+        {
+            "date": 1697180624497,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-13-13-success.log",
+            "hash": "c2110afce3a66b96daef89c58e4c207aac6d780ccaf0bc890def5cf9330ba830"
+        },
+        {
+            "date": 1697190735244,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-13-15-success.log",
+            "hash": "2f019a93975fb37fcce7a347da143b386ab6be1d3849d6df10b51cd8e1b41e18"
+        },
+        {
+            "date": 1697191258828,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-13-16-success.log",
+            "hash": "e334b70702296d003ffe15dab6fac4640080a6b72333468e86111fe3f6de8cad"
+        },
+        {
+            "date": 1697195102812,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-10-13-17-success.log",
+            "hash": "71dd28e5525c2c533df9850dc22db759a4e7aa605db30ceb66d29bccac8f7261"
         }
     ],
     "hashType": "sha256"

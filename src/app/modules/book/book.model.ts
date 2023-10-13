@@ -79,4 +79,4 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
   },
 );
 
-export const Ebook = model<IEbook, EbookModel>('Book', bookSchema);
+export const Ebook = model<IEbook, EbookModel>('Ebook', bookSchema);

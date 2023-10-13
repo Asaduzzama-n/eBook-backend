@@ -1,12 +1,12 @@
-import { IEbookContent } from './../bookContent/bookContent.interface';
 import { Schema, model } from 'mongoose';
 import { EbookModel, IEbook } from './book.interface';
 
-const bookSchema = new Schema<IEbook>(
+const bookSchema = new Schema<IEbook, Record<string, never>>(
   {
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     ebookId: {
       type: Schema.Types.ObjectId,

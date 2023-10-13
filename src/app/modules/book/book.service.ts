@@ -55,6 +55,7 @@ const getAllBooks = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
   const result = await Ebook.find(whereConditions)
+    .populate('ebookId')
     .populate('author.author1')
     .populate('author.author2')
     .populate('author.author3')
@@ -75,6 +76,7 @@ const getAllBooks = async (
 
 const getSingleBook = async (id: string): Promise<IEbook | null> => {
   const retrievedBook = await Ebook.findOne({ _id: id })
+    .populate('ebookId')
     .populate('author.author1')
     .populate('author.author2')
     .populate('author.author3');

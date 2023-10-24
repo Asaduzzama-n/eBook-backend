@@ -11,6 +11,7 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
     ebookId: {
       type: Schema.Types.ObjectId,
       ref: 'EbookContent',
+      required: true,
     },
     isbn: {
       type: String,

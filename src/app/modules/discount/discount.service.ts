@@ -20,11 +20,33 @@ const applyDiscounts = async (
 
     return result;
   } catch (error) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to apply discounts!');
+    throw new ApiError(httpStatus.BAD_REQUEST, error as string);
   }
 };
 
-const updateDiscounts = async () => {};
+const findAllDiscount = async (): Promise<IDiscount[] | null> => {
+  const result = await Discount.find({}).populate('book');
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No discount available!');
+  }
+  return result;
+};
+
+const deleteDiscount = async (id: string) => {
+  //!currently discount id [book id can be also consider]
+  const isExist = await Discount.findOne({ _id: id });
+  if (!isExist) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'No discount found with the given id!',
+    );
+  }
+  const result = await Discount.findOneAndDelete({ _id: id }).lean();
+  return result;
+};
+
 export const DiscountServices = {
   applyDiscounts,
+  findAllDiscount,
+  deleteDiscount,
 };

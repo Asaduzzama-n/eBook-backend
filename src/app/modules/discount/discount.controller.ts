@@ -16,7 +16,31 @@ const applyDiscounts = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const findAllDiscount = catchAsync(async (req: Request, res: Response) => {
+  const result = await DiscountServices.findAllDiscount();
+
+  sendResponse<IDiscount[] | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Discount retrieved successfully',
+    data: result,
+  });
+});
+
+const deleteDiscount = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await DiscountServices.deleteDiscount(id);
+
+  sendResponse<IDiscount | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Discount deleted successfully',
+    data: result,
+  });
+});
 
 export const DiscountController = {
   applyDiscounts,
+  findAllDiscount,
+  deleteDiscount,
 };

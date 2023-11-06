@@ -49,6 +49,21 @@
             "date": 1699214535628,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-06-02-success.log",
             "hash": "b81d1b4e75bef3ee9a373ab77afca866a32b65bbedadc0a512a7d5e84856856c"
+        },
+        {
+            "date": 1699251627881,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-06-12-success.log",
+            "hash": "db2df995335d21360b29039c10a0ca83846619a433d9c15d9cd3685cdf6f684a"
+        },
+        {
+            "date": 1699255393816,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-06-13-success.log",
+            "hash": "95080c06782f8f1004d8801b8d9a6897a1228b976b014d8307ea2d12f6b82d62"
+        },
+        {
+            "date": 1699258321483,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-06-14-success.log",
+            "hash": "022180bd3e03fddb474046817de26bc1b683c211b0f49721d3e4abad99532962"
         }
     ],
     "hashType": "sha256"

@@ -19,6 +19,7 @@ export const discountSchema = new Schema<IDiscount, Record<string, never>>(
     end: {
       type: Date,
       required: true,
+      // index: { expires: '0s' },
     },
   },
   {
@@ -27,7 +28,7 @@ export const discountSchema = new Schema<IDiscount, Record<string, never>>(
     },
   },
 );
-
+discountSchema.index({ end: 1 }, { expireAfterSeconds: 0 });
 export const Discount = model<IDiscount, DiscountModel>(
   'Discount',
   discountSchema,

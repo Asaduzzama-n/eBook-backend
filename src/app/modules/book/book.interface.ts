@@ -1,26 +1,30 @@
 import { Model, Types } from 'mongoose';
-import { IEbookContent } from '../bookContent/bookContent.interface';
 
 export type bookAuthor = {
   author1: Types.ObjectId;
   author2?: Types.ObjectId;
   author3?: Types.ObjectId;
 };
+
 export type bookPublisher = {
   name: string;
   address: string;
 };
+
 export type IEbook = {
   title: string;
-  ebookId?: Types.ObjectId | IEbookContent;
   isbn: string;
   bookDescription: string;
+  language: string;
   author: bookAuthor;
   category: string;
   publicationYear: string;
   publisher: bookPublisher;
-  edition: string;
+  version: string;
   price: number;
+  bookUrl?: commonFileStore;
+  coverImg?: commonFileStore;
+  quickViewUrl?: commonFileStore;
 };
 
 export type EbookModel = Model<IEbook>;
@@ -32,4 +36,9 @@ export type IEbookFilters = {
   title?: string;
   category?: string;
   isbn?: string;
+};
+
+export type commonFileStore = {
+  publicId: string;
+  url: string;
 };

@@ -8,15 +8,14 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
       required: true,
       unique: true,
     },
-    ebookId: {
-      type: Schema.Types.ObjectId,
-      ref: 'EbookContent',
-      required: true,
-    },
     isbn: {
       type: String,
       required: true,
       unique: true,
+    },
+    language: {
+      type: String,
+      required: true,
     },
     bookDescription: {
       type: String,
@@ -63,12 +62,56 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
       },
       required: true,
     },
-    edition: {
+    version: {
       type: String,
       required: true,
     },
     price: {
       type: Number,
+      required: true,
+    },
+    bookUrl: {
+      _id: false,
+
+      type: {
+        publicId: {
+          type: String,
+          required: true,
+        },
+        url: {
+          type: String,
+          required: true,
+        },
+      },
+      required: true,
+    },
+    coverImg: {
+      _id: false,
+      type: {
+        publicId: {
+          type: String,
+          required: true,
+        },
+        url: {
+          type: String,
+          required: true,
+        },
+      },
+      required: true,
+    },
+    quickViewUrl: {
+      _id: false,
+
+      type: {
+        publicId: {
+          type: String,
+          required: true,
+        },
+        url: {
+          type: String,
+          required: true,
+        },
+      },
       required: true,
     },
   },

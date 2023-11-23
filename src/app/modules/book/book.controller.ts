@@ -35,10 +35,11 @@ const getSingleBook = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateBook = catchAsync(async (req: Request, res: Response) => {
+  const files = req.files;
   const id = req.params.id;
   const { ...updatedBookData } = req.body;
 
-  const result = await BookService.updateBook(id, updatedBookData);
+  const result = await BookService.updateBook(id, updatedBookData, files);
 
   sendResponse<IEbook>(res, {
     statusCode: httpStatus.OK,
@@ -49,9 +50,10 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
-  const { eBookContent, ...eBookInfo } = req.body;
+  const { cover, file, quickView }: any = req.files;
+  const { ...bookData } = req.body;
 
-  const result = await BookService.createBook(eBookContent, eBookInfo);
+  const result = await BookService.createBook(cover, file, quickView, bookData);
 
   sendResponse<IEbook>(res, {
     statusCode: httpStatus.OK,

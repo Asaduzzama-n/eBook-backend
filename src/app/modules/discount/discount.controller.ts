@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import { DiscountServices } from './discount.service';
 import sendResponse from '../../../shared/sendResponse';

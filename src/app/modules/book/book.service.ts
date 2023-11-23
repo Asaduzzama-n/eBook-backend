@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { IEbook, IEbookFilters } from './book.interface';
+import { IEbook, IEbookFilters, commonFileStore } from './book.interface';
 import { Ebook } from './book.model';
 import ApiError from '../../../errors/ApiError';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -7,8 +7,11 @@ import { paginationHelpers } from '../../../helper/paginationHelper';
 import { bookFilterableFields } from './book.constants';
 import mongoose, { SortOrder } from 'mongoose';
 import { IGenericResponse } from '../../../interfaces/common';
-import { EbookContent } from '../bookContent/bookContent.model';
-import { IEbookContent } from '../bookContent/bookContent.interface';
+import {
+  deleteResourcesFromCloudinary,
+  updateCloudniaryFiles,
+  uploadToCloudinary,
+} from '../../../utils/cloudinary';
 
 const getAllBooks = async (
   filters: Partial<IEbookFilters>,
@@ -55,7 +58,6 @@ const getAllBooks = async (
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
   const result = await Ebook.find(whereConditions)
-    .populate('ebookId')
     .populate('author.author1')
     .populate('author.author2')
     .populate('author.author3')
@@ -76,7 +78,6 @@ const getAllBooks = async (
 
 const getSingleBook = async (id: string): Promise<IEbook | null> => {
   const retrievedBook = await Ebook.findOne({ _id: id })
-    .populate('ebookId')
     .populate('author.author1')
     .populate('author.author2')
     .populate('author.author3');
@@ -86,17 +87,52 @@ const getSingleBook = async (id: string): Promise<IEbook | null> => {
   return retrievedBook;
 };
 
-const updateBook = async (
-  id: string,
-  payload: Partial<IEbook>,
-): Promise<IEbook | null> => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateBook = async (id: string, payload: Partial<IEbook>, files: any) => {
   const isExist = await Ebook.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Book Not Found!');
   }
-
+  const { bookUrl, coverImg, quickViewUrl } = isExist;
   const { author, publisher, ...bookData } = payload;
   const updatedBookData: Partial<IEbook> = { ...bookData };
+
+  let updatedFileData: commonFileStore,
+    updatedCoverData: commonFileStore,
+    updatedQuickViewData: commonFileStore;
+
+  if (files && Object.keys(files).length > 0) {
+    if (files.file) {
+      updatedFileData = await updateCloudniaryFiles(
+        bookUrl?.publicId as string,
+        files?.file[0].path,
+        'raw',
+        true,
+        'contents',
+      );
+      updatedBookData.bookUrl = updatedFileData;
+    }
+    if (files.cover) {
+      updatedCoverData = await updateCloudniaryFiles(
+        coverImg?.publicId as string,
+        files?.cover[0].path,
+        'raw',
+        true,
+        'covers',
+      );
+      updatedBookData.coverImg = updatedCoverData;
+    }
+    if (files.quickView) {
+      updatedQuickViewData = await updateCloudniaryFiles(
+        quickViewUrl?.publicId as string,
+        files?.quickView[0].path,
+        'raw',
+        true,
+        'qviews',
+      );
+      updatedBookData.quickViewUrl = updatedQuickViewData;
+    }
+  }
 
   if (author && Object.keys(author).length > 0) {
     Object.keys(author).forEach(key => {
@@ -124,30 +160,106 @@ const updateBook = async (
   return result;
 };
 
+const deleteBook = async (id: string): Promise<IEbook | null> => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const isExist = await Ebook.findOne({ _id: id });
+    if (!isExist) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Book not found!');
+    }
+    const { bookUrl, coverImg, quickViewUrl } = isExist;
+
+    //Delete book cover,and content from cloudinary
+    await deleteResourcesFromCloudinary(
+      [
+        bookUrl?.publicId as string,
+        quickViewUrl?.publicId as string,
+        coverImg?.publicId as string,
+      ],
+      'raw',
+      true,
+    );
+
+    const result = await Ebook.findOneAndDelete({ _id: id }, { session });
+    if (!result) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete book!');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+    return result;
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
+  }
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createBook = async (
-  eBookContent: IEbookContent,
-  eBookInfo: IEbook,
+  cover: any,
+  file: any,
+  quickView: any,
+  payload: IEbook,
 ): Promise<IEbook | null> => {
+  const { price, author, ...bookData } = payload;
+
+  const convertedBookData: Partial<IEbook> = {
+    ...bookData,
+    price: Number(price),
+    author: author,
+  };
   let newBookAllData = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let uploadBookCover: any, uploadBookContent: any, uploadQuickViewFile: any;
+
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
-    const newBookContent = await EbookContent.create([eBookContent], {
-      session,
-    });
 
-    if (!newBookContent.length) {
+    if (!cover || !quickView || !file) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
-        'Failed to create book content!',
+        'Book Cover, Quick view and Content is required!',
       );
     }
 
-    eBookInfo.ebookId = newBookContent[0]?._id;
-    const newBook = await Ebook.create([eBookInfo], { session });
+    uploadBookCover = await uploadToCloudinary(cover[0]?.path, 'covers', 'raw');
+
+    uploadBookContent = await uploadToCloudinary(
+      file[0]?.path,
+      'contents',
+      'raw',
+    );
+
+    uploadQuickViewFile = await uploadToCloudinary(
+      quickView[0]?.path,
+      'qviews',
+      'raw',
+    );
+
+    if (!uploadQuickViewFile || !uploadBookContent || !uploadBookCover) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to upload File !');
+    }
+
+    convertedBookData.coverImg = uploadBookCover;
+    convertedBookData.bookUrl = uploadBookContent;
+    convertedBookData.quickViewUrl = uploadQuickViewFile;
+
+    const newBook = await Ebook.create([convertedBookData], { session });
 
     if (!newBook.length) {
+      await deleteResourcesFromCloudinary(
+        [
+          uploadBookCover?.publicId,
+          uploadBookContent?.publicId,
+          uploadQuickViewFile?.publicId,
+        ],
+        'raw',
+        true,
+      );
       throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create book!');
     }
     newBookAllData = newBook[0];
@@ -157,50 +269,27 @@ const createBook = async (
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
+    if (uploadBookCover || uploadBookContent || uploadQuickViewFile) {
+      await deleteResourcesFromCloudinary(
+        [
+          uploadBookCover?.publicId,
+          uploadBookContent?.publicId,
+          uploadQuickViewFile?.publicId,
+        ],
+        'raw',
+        true,
+      );
+    }
     throw error;
   }
 
   if (newBookAllData) {
     newBookAllData = await Ebook.findOne({ _id: newBookAllData.id }).populate(
-      'ebookId',
+      'author',
     );
   }
 
   return newBookAllData;
-};
-
-const deleteBook = async (id: string): Promise<IEbook | null> => {
-  const isExist = await Ebook.findOne({ _id: id });
-  if (!isExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Book not found!');
-  }
-  let result;
-  const session = await mongoose.startSession();
-  try {
-    session.startTransaction();
-    const deleteBookContent = await EbookContent.findOneAndDelete(
-      { _id: isExist.ebookId },
-      { session },
-    );
-    if (!deleteBookContent) {
-      throw new ApiError(
-        httpStatus.BAD_REQUEST,
-        'Filed to delete book content!',
-      );
-    }
-    result = await Ebook.findOneAndDelete({ _id: id }, { session });
-    if (!result) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete book!');
-    }
-
-    await session.commitTransaction();
-    await session.endSession();
-  } catch (error) {
-    await session.abortTransaction();
-    await session.endSession();
-    throw error;
-  }
-  return result;
 };
 
 export const BookService = {
@@ -210,7 +299,3 @@ export const BookService = {
   updateBook,
   getAllBooks,
 };
-
-//6527c6087c07ca33ef5781fb
-//65282643602977a9bbbab138
-//6528264e602977a9bbbab13a

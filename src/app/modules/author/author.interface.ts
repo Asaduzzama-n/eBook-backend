@@ -4,13 +4,18 @@ export type authorName = {
   firstName: string;
   lastName?: string;
 };
+
+export type authorImage = {
+  publicId: string;
+  url: string;
+};
 export type IAuthor = {
   name: authorName;
   email: string;
   bio: string;
   address: string;
-  bookPublished?: number;
-  image?: string;
+  bookPublished?: string;
+  image?: authorImage;
 };
 
 export type AuthorModel = Model<IAuthor>;

@@ -15,7 +15,6 @@ const userUpdateZodSchema = z.object({
     address: z.string().optional(),
     gender: z.enum([...userGender] as [string, ...string[]]).optional(),
     dateOfBirth: z.string().optional(),
-    image: z.string().optional(),
   }),
 });
 

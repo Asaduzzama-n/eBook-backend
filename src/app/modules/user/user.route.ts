@@ -11,7 +11,7 @@ router.delete('/:id', UserController.deleteUser);
 router.patch(
   '/:id',
   upload.single('avatar'),
-  // validateRequest(UserValidation.userUpdateZodSchema),
+  validateRequest(UserValidation.userUpdateZodSchema),
   UserController.updateUser,
 );
 router.get('/', UserController.getAllUser);

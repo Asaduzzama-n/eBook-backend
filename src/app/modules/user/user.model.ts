@@ -38,7 +38,14 @@ export const userSchema = new Schema<IUser>(
       type: String,
     },
     image: {
-      type: String,
+      type: {
+        publicId: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
     },
   },
   {

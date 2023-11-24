@@ -5,6 +5,11 @@ type userName = {
   lastName: string;
 };
 
+type image = {
+  publicId: string;
+  url: string;
+};
+
 export type IUser = {
   name: userName;
   email: string;
@@ -13,7 +18,7 @@ export type IUser = {
   address?: string;
   gender?: 'male' | 'female';
   dateOfBirth: string;
-  image?: string;
+  image?: image;
 };
 
 export type UserModel = Model<IUser>;

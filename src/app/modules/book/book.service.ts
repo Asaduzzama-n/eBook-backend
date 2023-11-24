@@ -88,7 +88,11 @@ const getSingleBook = async (id: string): Promise<IEbook | null> => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const updateBook = async (id: string, payload: Partial<IEbook>, files: any) => {
+const updateBook = async (
+  id: string,
+  payload: Partial<IEbook>,
+  files: any,
+): Promise<IEbook | null> => {
   const isExist = await Ebook.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Book Not Found!');
@@ -172,15 +176,17 @@ const deleteBook = async (id: string): Promise<IEbook | null> => {
     const { bookUrl, coverImg, quickViewUrl } = isExist;
 
     //Delete book cover,and content from cloudinary
-    await deleteResourcesFromCloudinary(
-      [
-        bookUrl?.publicId as string,
-        quickViewUrl?.publicId as string,
-        coverImg?.publicId as string,
-      ],
-      'raw',
-      true,
-    );
+    if (bookUrl?.publicId || quickViewUrl?.publicId || coverImg?.publicId) {
+      await deleteResourcesFromCloudinary(
+        [
+          bookUrl?.publicId as string,
+          quickViewUrl?.publicId as string,
+          coverImg?.publicId as string,
+        ],
+        'raw',
+        true,
+      );
+    }
 
     const result = await Ebook.findOneAndDelete({ _id: id }, { session });
     if (!result) {
@@ -196,7 +202,9 @@ const deleteBook = async (id: string): Promise<IEbook | null> => {
     throw error;
   }
 };
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const createBook = async (
   cover: any,
   file: any,

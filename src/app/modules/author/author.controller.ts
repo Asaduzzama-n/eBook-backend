@@ -38,8 +38,8 @@ const getSingleAuthor = catchAsync(async (req: Request, res: Response) => {
 
 const createAuthor = catchAsync(async (req: Request, res: Response) => {
   const { ...authorData } = req.body;
-
-  const result = await AuthorService.createAuthor(authorData);
+  const avatar = req?.file as Express.Multer.File;
+  const result = await AuthorService.createAuthor(authorData, avatar);
 
   sendResponse<IAuthor>(res, {
     statusCode: httpStatus.OK,
@@ -50,10 +50,11 @@ const createAuthor = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateAuthor = catchAsync(async (req: Request, res: Response) => {
+  const avatar = req.file as Express.Multer.File;
   const id = req.params.id;
   const { ...updatedData } = req.body;
 
-  const result = await AuthorService.updateAuthor(id, updatedData);
+  const result = await AuthorService.updateAuthor(id, updatedData, avatar);
 
   sendResponse<IAuthor>(res, {
     statusCode: httpStatus.OK,

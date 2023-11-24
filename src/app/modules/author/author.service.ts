@@ -7,6 +7,11 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helper/paginationHelper';
 import { authorFilterableFields } from './author.constants';
 import { SortOrder } from 'mongoose';
+import {
+  deleteResourcesFromCloudinary,
+  updateCloudniaryFiles,
+  uploadToCloudinary,
+} from '../../../utils/cloudinary';
 
 const getAllAuthor = async (
   filters: IAuthorFilters,
@@ -72,6 +77,7 @@ const getSingleAuthor = async (id: string): Promise<IAuthor | null> => {
 const updateAuthor = async (
   id: string,
   payload: Partial<IAuthor>,
+  avatar: Express.Multer.File,
 ): Promise<IAuthor | null> => {
   const isExist = await Author.findOne({ _id: id });
   if (!isExist) {
@@ -79,6 +85,22 @@ const updateAuthor = async (
   }
   const { name, ...authorData } = payload;
   const updatedAuthorData: Partial<IAuthor> = { ...authorData };
+
+  let updatedAvatar;
+  if (avatar) {
+    if (isExist?.image?.publicId) {
+      updatedAvatar = await updateCloudniaryFiles(
+        isExist?.image?.publicId,
+        avatar?.path,
+        'image',
+        true,
+        'authors',
+      );
+    } else {
+      updatedAvatar = await uploadToCloudinary(avatar?.path, 'users', 'image');
+    }
+    updatedAuthorData.image = updatedAvatar!;
+  }
 
   if (name && Object.keys(name).length > 0) {
     Object.keys(name).forEach(key => {
@@ -95,18 +117,53 @@ const updateAuthor = async (
   return result;
 };
 
-const createAuthor = async (payload: IAuthor): Promise<IAuthor | null> => {
-  const createdBook = await Author.create(payload);
-  if (!createdBook) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Author!');
+const createAuthor = async (
+  payload: IAuthor,
+  avatar: Express.Multer.File,
+): Promise<IAuthor | null> => {
+  let uploadedAvatar;
+  try {
+    //Upload author avatar to author/... in cloudinary
+    if (avatar) {
+      uploadedAvatar = await uploadToCloudinary(
+        avatar?.path,
+        'authors',
+        'image',
+      );
+      uploadedAvatar ? (payload.image = uploadedAvatar) : null;
+    }
+    console.log(uploadedAvatar);
+    console.log(payload);
+    const result = await Author.create(payload);
+
+    if (!result) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create Author!');
+    }
+    return result;
+  } catch (error) {
+    if (uploadedAvatar?.publicId) {
+      await deleteResourcesFromCloudinary(
+        [uploadedAvatar.publicId],
+        'image',
+        true,
+      );
+    }
+    throw error;
   }
-  return createdBook;
 };
 
 const deleteAuthor = async (id: string): Promise<IAuthor | null> => {
   const isExist = await Author.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Author not found!');
+  }
+
+  if (isExist?.image?.publicId) {
+    await deleteResourcesFromCloudinary(
+      [isExist?.image?.publicId],
+      'image',
+      true,
+    );
   }
 
   const result = await Author.findOneAndDelete({ _id: id });

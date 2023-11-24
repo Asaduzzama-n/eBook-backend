@@ -219,6 +219,16 @@
             "date": 1700838404606,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-24-21-success.log",
             "hash": "516278ec73094d9059eef0760bde9df7d9184cbb1e603cfe620f401fe823bad7"
+        },
+        {
+            "date": 1700841605729,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-24-22-success.log",
+            "hash": "7672339f4c12908cf87426cd065525a193d16807f266122dcfd975a348f6f78b"
+        },
+        {
+            "date": 1700850550862,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2023-11-25-00-success.log",
+            "hash": "086ea2aaaf6ae9b36479af55f520af4cd2341570f51d75b071f0098f7a6f315c"
         }
     ],
     "hashType": "sha256"

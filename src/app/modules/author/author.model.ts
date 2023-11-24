@@ -26,10 +26,18 @@ export const authorSchema = new Schema<IAuthor>(
       required: true,
     },
     bookPublished: {
-      type: Number,
+      type: String,
     },
     image: {
-      type: String,
+      _id: false,
+      type: {
+        publicId: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
     },
   },
   {

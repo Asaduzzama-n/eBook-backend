@@ -2,6 +2,11 @@ import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { IUser } from './user.interface';
 import { User } from './user.model';
+import {
+  deleteResourcesFromCloudinary,
+  updateCloudniaryFiles,
+  uploadToCloudinary,
+} from '../../../utils/cloudinary';
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const user = await User.findOne({ _id: id });
@@ -22,11 +27,13 @@ const getAllUser = async (): Promise<IUser[] | null> => {
 const updateUser = async (
   id: string,
   payload: Partial<IUser>,
+  avatar: Express.Multer.File | undefined,
 ): Promise<IUser | null> => {
   const isExist = await User.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
   }
+
   const { name, ...userData } = payload;
   const updatedUserData: Partial<IUser> = { ...userData };
 
@@ -37,7 +44,21 @@ const updateUser = async (
       (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
     });
   }
-
+  let updatedAvatar;
+  if (avatar) {
+    if (isExist?.image?.publicId) {
+      updatedAvatar = await updateCloudniaryFiles(
+        isExist?.image?.publicId,
+        avatar?.path,
+        'image',
+        true,
+        'users',
+      );
+    } else {
+      updatedAvatar = await uploadToCloudinary(avatar?.path, 'users', 'image');
+    }
+    updatedUserData.image = updatedAvatar!;
+  }
   const result = await User.findOneAndUpdate({ _id: id }, updatedUserData, {
     new: true,
   });
@@ -48,6 +69,11 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
   const isExist = await User.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+  const { image } = isExist;
+
+  if (image?.publicId) {
+    await deleteResourcesFromCloudinary([image?.publicId], 'image', true);
   }
 
   const result = await User.findOneAndDelete({ _id: id });

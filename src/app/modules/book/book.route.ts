@@ -3,6 +3,8 @@ import validateRequest from '../../middleware/validateRequest';
 import { BookValidation } from './book.validation';
 import { BookController } from './book.controller';
 import { upload } from '../../middleware/multer.middleware';
+import { auth } from '../../middleware/auth';
+import { ENUM_USER_ROLE } from '../../../enum/user';
 
 const router = express.Router();
 
@@ -24,10 +26,11 @@ router.patch(
       maxCount: 1,
     },
   ]),
+  auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(BookValidation.updateBookZodSchema),
   BookController.updateBook,
 );
-router.delete('/:id', BookController.deleteBook);
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.deleteBook);
 
 router.post(
   '/',
@@ -45,6 +48,7 @@ router.post(
       maxCount: 1,
     },
   ]),
+  auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(BookValidation.createBookZodSchema),
   BookController.createBook,
 );

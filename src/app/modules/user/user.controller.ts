@@ -28,11 +28,41 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateUser = catchAsync(async (req: Request, res: Response) => {
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const { email, role } = req.user!;
+  const result = await UserServices.getMyProfile(email, role);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile retrieved successfully!',
+    data: result,
+  });
+});
+
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
   const avatar = req?.file as Express.Multer.File;
+  const { email, role } = req.user!;
+  const { ...updatedData } = req.body;
+  const result = await UserServices.updateMyProfile(
+    email,
+    role,
+    updatedData,
+    avatar,
+  );
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile updated successfully!',
+    data: result,
+  });
+});
+
+const updateUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const { ...updatedData } = req.body;
-  const result = await UserServices.updateUser(id, updatedData, avatar);
+  const result = await UserServices.updateUser(id, updatedData);
 
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
@@ -59,4 +89,6 @@ export const UserController = {
   getAllUser,
   updateUser,
   deleteUser,
+  getMyProfile,
+  updateMyProfile,
 };

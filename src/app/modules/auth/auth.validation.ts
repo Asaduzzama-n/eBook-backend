@@ -14,9 +14,28 @@ const createUserZodSchema = z.object({
     gender: z.enum([...userGender] as [string, ...string[]]).optional(),
     dateOfBirth: z.string().optional(),
     image: z.string().optional(),
+    role: z.string({ required_error: 'User role is required!' }),
+    isSubscribe: z.string({
+      required_error: 'User subscribe status is required!',
+    }),
+  }),
+});
+
+const userLoginZodSchema = z.object({
+  body: z.object({
+    email: z.string({ required_error: 'Email is required!' }),
+    password: z.string({ required_error: 'Password is required!' }),
+  }),
+});
+
+const refreshTokenZodValidation = z.object({
+  cookies: z.object({
+    refreshToken: z.string({ required_error: 'Refresh token is required!' }),
   }),
 });
 
 export const AuthValidation = {
   createUserZodSchema,
+  userLoginZodSchema,
+  refreshTokenZodValidation,
 };

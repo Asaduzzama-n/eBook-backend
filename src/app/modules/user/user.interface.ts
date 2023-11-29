@@ -19,6 +19,26 @@ export type IUser = {
   gender?: 'male' | 'female';
   dateOfBirth: string;
   image?: image;
+  role: string;
+  isSubscribe: true | false;
 };
 
-export type UserModel = Model<IUser>;
+export interface IUserWithId extends IUser {
+  _id: string;
+}
+
+export interface IUserMethods {
+  isUserExists(
+    email: string,
+  ): Promise<Pick<
+    IUserWithId,
+    '_id' | 'email' | 'role' | 'password' | 'isSubscribe'
+  > | null>;
+
+  isPasswordMatched(
+    givenPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean>;
+}
+
+export type UserModel = Model<IUser, Record<string, unknown>, IUserMethods>;

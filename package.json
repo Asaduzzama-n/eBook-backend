@@ -26,10 +26,15 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.10",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
+    "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "eslint": "^8.46.0",
@@ -38,6 +43,7 @@
     "firebase-admin": "^11.11.0",
     "http-status": "^1.7.0",
     "husky": "^8.0.3",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.4.1",
     "multer": "^1.4.5-lts.1",
     "prettier": "^3.0.1",

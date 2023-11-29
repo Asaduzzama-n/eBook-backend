@@ -3,7 +3,6 @@ import { z } from 'zod';
 const createBookZodSchema = z.object({
   body: z.object({
     title: z.string({ required_error: 'Title is required!' }),
-    bookUrl: z.string().optional(),
     isbn: z.string({ required_error: 'ISBN is Required!' }),
     bookDescription: z.string({
       required_error: 'Book description is required!',
@@ -23,6 +22,7 @@ const createBookZodSchema = z.object({
     }),
     version: z.string({ required_error: 'Edition is Required!' }),
     price: z.string({ required_error: 'Price is Required!' }),
+    bookUrl: z.string().optional(),
     coverImg: z.string().optional(),
     quickViewUrl: z.string().optional(),
   }),
@@ -51,6 +51,9 @@ const updateBookZodSchema = z.object({
       .optional(),
     version: z.string().optional(),
     price: z.number().optional(),
+    bookUrl: z.string().optional(),
+    coverImg: z.string().optional(),
+    quickViewUrl: z.string().optional(),
   }),
 });
 

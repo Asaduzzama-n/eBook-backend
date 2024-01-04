@@ -6,7 +6,7 @@ import { auth } from '../../middleware/auth';
 import { ENUM_USER_ROLE } from '../../../enum/user';
 
 const router = express.Router();
-router.get('/:id', ReviewController.getSingleReview);
+// router.get('/:id', ReviewController.getSingleReview);
 router.patch(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
@@ -18,12 +18,13 @@ router.delete(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   ReviewController.deleteReview,
 );
+router.get('/:id', ReviewController.getAllReview);
+
 router.post(
   '/',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
+  // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   validateRequest(ReviewValidation.createReviewZodSchema),
   ReviewController.createReview,
 );
-router.get('/', ReviewController.getAllReview);
 
 export const ReviewRoutes = router;

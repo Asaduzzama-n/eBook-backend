@@ -3,6 +3,8 @@ export type IGenericResponse<T> = {
     page: number;
     limit: number;
     total: number;
+    currentPage?: number;
+    numberOfPages?: number;
   };
   data: T;
 };

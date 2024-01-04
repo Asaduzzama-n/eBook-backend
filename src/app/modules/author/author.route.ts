@@ -25,7 +25,7 @@ router.delete(
 router.post(
   '/',
   upload.single('avatar'),
-  auth(ENUM_USER_ROLE.ADMIN),
+  // auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(AuthorValidation.createAuthorZodSchema),
   AuthorController.createAuthor,
 );

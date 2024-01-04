@@ -6,9 +6,16 @@ export const reviewSchema = new Schema<IReview>({
     type: Number,
     required: true,
   },
-  comment: {
+  review: {
     type: String,
     required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  isHelpful: {
+    type: Number,
   },
   book: {
     type: Schema.Types.ObjectId,

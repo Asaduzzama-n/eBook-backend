@@ -48,7 +48,6 @@ router.post(
       maxCount: 1,
     },
   ]),
-  auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(BookValidation.createBookZodSchema),
   BookController.createBook,
 );

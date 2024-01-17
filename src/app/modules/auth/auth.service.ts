@@ -12,7 +12,13 @@ import config from '../../../config';
 import { jwtHelpers } from '../../../helper/jwtHelper';
 
 const createUser = async (payload: IUser): Promise<IUser | null> => {
+  const { email } = payload;
+  const isUserExist = await User.findOne({ email: email });
+  if (isUserExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User already exists');
+  }
   const createdUser = await User.create(payload);
+
   if (!createdUser) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user!');
   }
@@ -20,11 +26,10 @@ const createUser = async (payload: IUser): Promise<IUser | null> => {
 };
 
 const loginUser = async (
-  payload: IUserLogin,
+  email: string,
+  password: string,
 ): Promise<IUserLoginResponse | null> => {
-  const { email, password } = payload;
   const userObj = new User();
-
   const isUserExist = await userObj.isUserExists(email);
 
   if (!isUserExist) {
@@ -42,6 +47,7 @@ const loginUser = async (
 
   const accessToken = jwtHelpers.createToken(
     {
+      id: isUserExist._id,
       email: email,
       role: isUserExist.role,
       isSubscribe: isUserExist.isSubscribe,
@@ -52,12 +58,13 @@ const loginUser = async (
 
   const refreshToken = jwtHelpers.createToken(
     {
+      id: isUserExist._id,
       email: email,
       role: isUserExist.role,
       isSubscribe: isUserExist.isSubscribe,
     },
     config.jwt.refresh_secret as Secret,
-    config.jwt.expires_in as string,
+    config.jwt.refresh_expires_in as string,
   );
 
   return {
@@ -89,6 +96,7 @@ const refreshToken = async (
 
   const newAccessToken = jwtHelpers.createToken(
     {
+      id: isUserExist._id,
       email: isUserExist.email,
       role: isUserExist.role,
       isSubscribe: isUserExist.isSubscribe,

@@ -6,4 +6,5 @@ export const bookFilterableFields = [
   'category',
   'isbn',
   'title',
+  'language',
 ];

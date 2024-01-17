@@ -8,7 +8,9 @@ import { IRefreshTokenResponse, IUserLoginResponse } from './auth.interface';
 import config from '../../../config';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.body);
   const { ...userData } = req.body;
+  console.log(userData);
   const result = await AuthService.createUser(userData);
 
   sendResponse<IUser>(res, {
@@ -20,13 +22,17 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
-  const { ...userLoginData } = req.body;
-  const result = await AuthService.loginUser(userLoginData);
+  const { email, password } = req.body;
+
+  const result = await AuthService.loginUser(
+    email as string,
+    password as string,
+  );
 
   const { refreshToken, ...others } = result as IUserLoginResponse;
 
   const cookieOptions = {
-    secure: config.env === 'production',
+    secure: config.env === 'production' ? true : false,
     httpOnly: true,
   };
 
@@ -41,18 +47,17 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.cookies);
-
   const { refreshToken } = req.cookies;
+  console.log(refreshToken);
 
   const result = await AuthService.refreshToken(refreshToken);
 
-  const cookieOptions = {
-    secure: config.env === 'production',
-    httpOnly: true,
-  };
+  // const cookieOptions = {
+  //   secure: config.env === 'production',
+  //   httpOnly: true,
+  // };
 
-  res.cookie('refreshToken', refreshToken, cookieOptions);
+  // res.cookie('refreshToken', refreshToken, cookieOptions);
 
   sendResponse<IRefreshTokenResponse>(res, {
     statusCode: httpStatus.OK,

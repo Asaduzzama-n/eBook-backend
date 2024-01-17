@@ -47,6 +47,7 @@ const updateMyProfile = async (
   payload: Partial<IUser>,
   avatar: Express.Multer.File | undefined,
 ): Promise<IUser | null> => {
+  // console.log(payload);
   const isExist = await User.findOne({
     email: email,
     role: role as 'admin' | 'user',

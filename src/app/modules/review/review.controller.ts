@@ -6,6 +6,7 @@ import httpStatus from 'http-status';
 import { ReviewService } from './review.service';
 import pick from '../../../shared/pick';
 import { paginationFields } from '../../../constants/pagination';
+import { reviewFilterableFields } from './review.constants';
 
 // const getAllReview = catchAsync(async (req: Request, res: Response) => {
 //   const id = req.params.id;
@@ -23,8 +24,13 @@ import { paginationFields } from '../../../constants/pagination';
 
 const getAllReview = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
+  const filters = pick(req.query, reviewFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
-  const result = await ReviewService.getAllReview(paginationOptions, id);
+  const result = await ReviewService.getAllReview(
+    filters,
+    paginationOptions,
+    id,
+  );
 
   sendResponse<IReviewResponse | null>(res, {
     statusCode: httpStatus.OK,
@@ -49,7 +55,6 @@ const getSingleReview = catchAsync(async (req: Request, res: Response) => {
 
 const createReview = catchAsync(async (req: Request, res: Response) => {
   const { ...reviewData } = req.body;
-
   const result = await ReviewService.createReview(reviewData);
 
   sendResponse<IReview>(res, {
@@ -59,9 +64,11 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const updateReview = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const { ...updatedData } = req.body;
+  console.log(updatedData);
 
   const result = await ReviewService.updateReview(id, updatedData);
 

@@ -15,9 +15,7 @@ const createUserZodSchema = z.object({
     dateOfBirth: z.string().optional(),
     image: z.string().optional(),
     role: z.string({ required_error: 'User role is required!' }),
-    isSubscribe: z.string({
-      required_error: 'User subscribe status is required!',
-    }),
+    isSubscribe: z.string().optional(),
   }),
 });
 
@@ -25,6 +23,7 @@ const userLoginZodSchema = z.object({
   body: z.object({
     email: z.string({ required_error: 'Email is required!' }),
     password: z.string({ required_error: 'Password is required!' }),
+    // password: z.string().optional(),
   }),
 });
 

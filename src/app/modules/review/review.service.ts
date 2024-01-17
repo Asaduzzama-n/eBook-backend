@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { IReview, IReviewResponse } from './review.interface';
+import { IReview, IReviewFilters, IReviewResponse } from './review.interface';
 import { Review } from './review.model';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -37,18 +37,32 @@ import { SortOrder } from 'mongoose';
 // };
 
 const getAllReview = async (
+  filters: Partial<IReviewFilters>,
   paginationOptions: IPaginationOptions,
   id: string,
 ): Promise<IGenericResponse<IReviewResponse>> => {
+  const { ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
+
+  const andConditions = [];
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
 
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder;
   }
 
-  const reviews = await Review.find({ book: id })
+  const reviews = await Review.find({
+    $and: [{ book: id }, ...andConditions],
+  })
     .populate({ path: 'user', select: 'name' })
     .sort(sortConditions)
     .skip(skip)
@@ -104,16 +118,23 @@ const createReview = async (payload: IReview): Promise<IReview | null> => {
 
 const updateReview = async (
   id: string,
-  updatedData: Partial<IReview>,
+  updatedData: any,
 ): Promise<IReview | null> => {
-  const isExist = await Review.findOne({ _id: id });
-  if (!isExist) {
+  console.log(updatedData);
+  const review = await Review.findOne({ _id: id });
+  if (!review) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Review not found');
   }
-  const result = await Review.findOneAndUpdate({ _id: id }, updatedData, {
-    new: true,
-  });
-  return result;
+  if (updatedData.helpfulVotes) {
+    review.helpfulVotes += 1;
+  } else if (updatedData?.inappropriateCount) {
+    review.inappropriateCount += 1;
+  } else if (updatedData.unhelpfulVotes) {
+    review.unhelpfulVotes += 1;
+  }
+
+  await review.save();
+  return review;
 };
 
 const deleteReview = async (id: string): Promise<IReview | null> => {

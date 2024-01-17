@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { UserController } from './user.controller';
 import validateRequest from '../../middleware/validateRequest';
 import { UserValidation } from './user.validation';
@@ -17,8 +17,12 @@ router.patch(
   '/my-profile',
   upload.single('avatar'),
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
-  validateRequest(UserValidation.userUpdateZodSchema),
-  UserController.updateMyProfile,
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = UserValidation.userUpdateZodSchema.parse(
+      JSON.parse(req.body.data),
+    );
+    return UserController.updateMyProfile(req, res, next);
+  },
 );
 
 router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser);

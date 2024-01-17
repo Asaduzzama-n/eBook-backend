@@ -26,7 +26,7 @@ router.patch(
       maxCount: 1,
     },
   ]),
-  auth(ENUM_USER_ROLE.ADMIN),
+  // auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(BookValidation.updateBookZodSchema),
   BookController.updateBook,
 );

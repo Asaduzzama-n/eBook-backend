@@ -6,10 +6,12 @@ import { auth } from '../../middleware/auth';
 import { ENUM_USER_ROLE } from '../../../enum/user';
 
 const router = express.Router();
-// router.get('/:id', ReviewController.getSingleReview);
+router.get('/book/:id', ReviewController.getAllReview);
+
+router.get('/:id', ReviewController.getSingleReview);
 router.patch(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
+  // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   validateRequest(ReviewValidation.updateReviewZodSchema),
   ReviewController.updateReview,
 );
@@ -18,7 +20,6 @@ router.delete(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   ReviewController.deleteReview,
 );
-router.get('/:id', ReviewController.getAllReview);
 
 router.post(
   '/',

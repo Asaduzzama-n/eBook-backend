@@ -7,11 +7,14 @@ import { paginationHelpers } from '../../../helper/paginationHelper';
 import { bookFilterableFields } from './book.constants';
 import mongoose, { SortOrder } from 'mongoose';
 import { IGenericResponse } from '../../../interfaces/common';
+
+import bcrypt from 'bcrypt';
 import {
   deleteResourcesFromCloudinary,
   updateCloudniaryFiles,
   uploadToCloudinary,
 } from '../../../utils/cloudinary';
+import config from '../../../config';
 
 const getAllBooks = async (
   filters: Partial<IEbookFilters>,

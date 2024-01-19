@@ -15,14 +15,14 @@ const addToWishList = async (payload: IWishList): Promise<IWishList | null> => {
   if (!result) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      'Failed to add boot to wishlist!',
+      'Failed to add book to wishlist!',
     );
   }
   return result;
 };
 
 const getFromWishlist = async (id: string): Promise<IWishList[] | null> => {
-  const result = await WishList.find({ user: id }).populate('book');
+  const result = await WishList.find({ user: id });
   if (!result) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,

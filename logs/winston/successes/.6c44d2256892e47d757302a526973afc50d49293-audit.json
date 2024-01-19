@@ -194,6 +194,41 @@
             "date": 1705518180754,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-18-01-success.log",
             "hash": "6c94cbf8863d1d2f5237bb3119ba4cd1fc221985875e26e78c4b903a9cd2b484"
+        },
+        {
+            "date": 1705554699382,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-18-11-success.log",
+            "hash": "fbbe40154fc9c131ddd0ffd2535da51ca30def4f92ba47a92cbaf36f1d70a36b"
+        },
+        {
+            "date": 1705557602881,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-18-12-success.log",
+            "hash": "db573793dac584e5739e189695ee6ae545b7203d9f27897ee52c3a4a97a6cbd3"
+        },
+        {
+            "date": 1705562300856,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-18-13-success.log",
+            "hash": "dcb63c5ddcaa254db9802f7e9582e911fade3e06d75039b1b5cef072aacf1c47"
+        },
+        {
+            "date": 1705564978490,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-18-14-success.log",
+            "hash": "71eb28aecaba9614e527344e8d9700332e40639ef5110b154b2469f4838cf73e"
+        },
+        {
+            "date": 1705569901109,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-18-15-success.log",
+            "hash": "f85396d9bde53958fb20d8e2fbd9de87ef4d6d288a20035c3590a921ff62bc0e"
+        },
+        {
+            "date": 1705672581194,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-19-19-success.log",
+            "hash": "c2c317df0ae37ce389976a981edc0dc43b7b8ba01c6d2ff8427105eca1c64ed3"
+        },
+        {
+            "date": 1705673783443,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\successes\\phu-2024-01-19-20-success.log",
+            "hash": "c2688c3ffef47b5efab02abd30ab0406fb4b208a1a28508f39fa19970b372734"
         }
     ],
     "hashType": "sha256"

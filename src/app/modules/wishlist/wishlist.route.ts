@@ -18,7 +18,7 @@ router.delete(
 );
 router.post(
   '/',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.USER),
   validateRequest(WishListValidation.addToWishListZodSchema),
   WishlistController.addToWishList,
 );

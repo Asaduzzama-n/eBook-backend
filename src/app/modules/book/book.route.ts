@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import validateRequest from '../../middleware/validateRequest';
 import { BookValidation } from './book.validation';
 import { BookController } from './book.controller';
@@ -27,9 +27,16 @@ router.patch(
     },
   ]),
   // auth(ENUM_USER_ROLE.ADMIN),
-  validateRequest(BookValidation.updateBookZodSchema),
-  BookController.updateBook,
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = BookValidation.updateBookZodSchema.parse(
+      JSON.parse(req.body.data),
+    );
+    return BookController.updateBook(req, res, next);
+  },
+  // validateRequest(BookValidation.updateBookZodSchema),
+  // BookController.updateBook,
 );
+
 router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.deleteBook);
 
 router.post(
@@ -48,8 +55,14 @@ router.post(
       maxCount: 1,
     },
   ]),
-  validateRequest(BookValidation.createBookZodSchema),
-  BookController.createBook,
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = BookValidation.createBookZodSchema.parse(
+      JSON.parse(req.body.data),
+    );
+    return BookController.createBook(req, res, next);
+  },
+  // validateRequest(BookValidation.createBookZodSchema),
+  // BookController.createBook,
 );
 
 router.get('/', BookController.getAllBooks);

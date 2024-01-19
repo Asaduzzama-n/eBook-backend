@@ -194,6 +194,41 @@
             "date": 1705518180758,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-18-01-error.log",
             "hash": "7d9a006ac149788c06d0486ec7a474a7640576cc1d455dc839d5129d7b0611e7"
+        },
+        {
+            "date": 1705554699406,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-18-11-error.log",
+            "hash": "c3406bef68f47dcfe1bade063c3f172c9a8d405e65623a228a040c6b1fd311ba"
+        },
+        {
+            "date": 1705557602884,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-18-12-error.log",
+            "hash": "c855a50c8adc8cfc2468042d1d8e83ec2811b0f92f18704039b97b571810becf"
+        },
+        {
+            "date": 1705562300859,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-18-13-error.log",
+            "hash": "7078076e723e908fac530c31637b790d18f44a0b7dc4f08d050b0365fbf01bf3"
+        },
+        {
+            "date": 1705564978493,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-18-14-error.log",
+            "hash": "22aa990dfd6032cc16ae396142a127e4fd4d294d4ba3dc367d5cf821838f0792"
+        },
+        {
+            "date": 1705569901112,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-18-15-error.log",
+            "hash": "21b286a1f5022dfccda6be01e632044012fe39eef9694f23f787b54e39b3a8e3"
+        },
+        {
+            "date": 1705672581221,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-19-19-error.log",
+            "hash": "941900016d2b652569900abd0f35ea0e8937c5b8c5611e837d1916bde2922fc8"
+        },
+        {
+            "date": 1705673783446,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-19-20-error.log",
+            "hash": "16f2e80bdadd2bcfbce96685b854a66133aa8021ac9f4b29c7d95158e0d3d7c4"
         }
     ],
     "hashType": "sha256"

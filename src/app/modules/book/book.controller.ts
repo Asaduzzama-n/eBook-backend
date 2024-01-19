@@ -50,7 +50,7 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
-  const { cover, file, quickView }: any = req.files;
+  const { cover, file, quickView }: any = req.files as Express.Multer.File[];
   const { ...bookData } = req.body;
 
   const result = await BookService.createBook(cover, file, quickView, bookData);

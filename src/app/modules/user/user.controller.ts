@@ -41,7 +41,6 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
-  console.log(req?.file, req?.body);
   const avatar = req?.file as Express.Multer.File;
   const { email, role } = req.user!;
   const { ...updatedData } = req.body;

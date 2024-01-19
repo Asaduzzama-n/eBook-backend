@@ -12,7 +12,7 @@ const addToWishList = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IWishList>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book added to wishlist successfully!',
+    message: 'Book added to wishlist',
     data: result,
   });
 });
@@ -36,7 +36,7 @@ const deleteFromWishlist = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IWishList>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book deleted from wishlist successfully!',
+    message: 'Book removed from wishlist',
     data: result,
   });
 });

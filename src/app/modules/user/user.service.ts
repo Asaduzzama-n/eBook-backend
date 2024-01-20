@@ -10,6 +10,7 @@ import {
 
 import bcrypt from 'bcrypt';
 import config from '../../../config';
+import { Payment } from '../Payment/payment.model';
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const user = await User.findOne({ _id: id });
@@ -39,6 +40,24 @@ const getMyProfile = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
   }
   return user;
+};
+
+const getUserPurchase = async (id: string) => {
+  const result = await Payment.find({ userId: id })
+    .populate('userId', {
+      name: 1,
+      email: 1,
+      contactNo: 1,
+      address: 1,
+    })
+    .populate('books', { title: 1, price: 1, coverImg: 1, bookUrl: 1 });
+  if (!result) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Failed to retrieved user purchase',
+    );
+  }
+  return result;
 };
 
 const updateMyProfile = async (
@@ -156,4 +175,5 @@ export const UserServices = {
   deleteUser,
   getMyProfile,
   updateMyProfile,
+  getUserPurchase,
 };

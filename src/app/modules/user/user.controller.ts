@@ -5,6 +5,17 @@ import sendResponse from '../../../shared/sendResponse';
 import { IUser } from './user.interface';
 import httpStatus from 'http-status';
 
+const getUserPurchase = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.user!;
+  const result = await UserServices.getUserPurchase(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Purchased history retrieved successfully',
+    data: result,
+  });
+});
+
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const result = await UserServices.getSingleUser(id);
@@ -92,4 +103,5 @@ export const UserController = {
   deleteUser,
   getMyProfile,
   updateMyProfile,
+  getUserPurchase,
 };

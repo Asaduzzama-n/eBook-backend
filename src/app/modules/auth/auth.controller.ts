@@ -66,8 +66,33 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const forgotPassword = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const result = await AuthService.forgotPassword(email);
+
+  sendResponse<IUserLoginResponse>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: result.message,
+  });
+});
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization || '';
+  await AuthService.resetPassword(req.body, token);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Account recovered!',
+  });
+});
+
 export const AuthController = {
+  resetPassword,
   createUser,
   loginUser,
   refreshToken,
+  forgotPassword,
 };

@@ -13,6 +13,12 @@ router.get(
   UserController.getMyProfile,
 );
 
+router.get(
+  '/purchase-history',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  UserController.getUserPurchase,
+);
+
 router.patch(
   '/my-profile',
   upload.single('avatar'),

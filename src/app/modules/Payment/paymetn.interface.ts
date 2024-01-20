@@ -7,7 +7,8 @@ export type IPayment = {
   paymentMethod: string;
   paymentStatus: string;
   books: Types.ObjectId[];
-  paymentGatewayInfo: Record<string, any>;
+  invoiceId: string;
+  paymentGatewayInfo?: Record<string, any>;
 };
 
 export type PaymentModel = Model<IPayment>;

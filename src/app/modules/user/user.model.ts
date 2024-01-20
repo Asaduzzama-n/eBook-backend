@@ -78,11 +78,11 @@ userSchema.methods.isUserExists = async (
   email: string,
 ): Promise<Pick<
   IUserWithId,
-  '_id' | 'email' | 'role' | 'password' | 'isSubscribe'
+  '_id' | 'email' | 'role' | 'password' | 'isSubscribe' | 'name'
 > | null> => {
   return await User.findOne(
     { email: email },
-    { _id: 1, email: 1, role: 1, password: 1, isSubscribe: 1 },
+    { _id: 1, email: 1, role: 1, password: 1, isSubscribe: 1, name: 1 },
   ).lean();
 };
 

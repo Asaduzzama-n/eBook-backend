@@ -27,4 +27,14 @@ export default {
     refresh_secret: process.env.JWT_REFRESH_SECRET,
     refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
   },
+  ssl: {
+    storeId: process.env.SSL_STORE_ID,
+    storePass: process.env.SSL_STORE_PASS,
+    sslPaymentUrl: process.env.SSL_PAYMENT_URL,
+    sslValidationUrl: process.env.SSL_VALIDATION_URL,
+  },
+
+  resetPassUiLink: process.env.RESET_PASS_UI_LINK,
+  email: process.env.EMAIL,
+  emailSecret: process.env.EMAIL_SECRET,
 };

@@ -32,7 +32,7 @@ export interface IUserMethods {
     email: string,
   ): Promise<Pick<
     IUserWithId,
-    '_id' | 'email' | 'role' | 'password' | 'isSubscribe'
+    '_id' | 'email' | 'role' | 'password' | 'isSubscribe' | 'name'
   > | null>;
 
   isPasswordMatched(

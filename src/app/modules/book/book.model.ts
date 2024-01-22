@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import { EbookModel, IEbook } from './book.interface';
 import config from '../../../config';
 import bcrypt from 'bcrypt';
@@ -18,6 +18,11 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
     language: {
       type: String,
       required: true,
+    },
+    sold: {
+      type: Number,
+      required: true,
+      default: 0,
     },
     bookDescription: {
       type: String,
@@ -46,6 +51,10 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
       type: String,
       required: true,
     },
+    categoryName: {
+      type: String,
+      required: true,
+    },
     publicationYear: {
       type: String,
       required: true,
@@ -70,6 +79,14 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
     },
     price: {
       type: Number,
+      required: true,
+    },
+    page: {
+      type: String,
+      required: true,
+    },
+    readTime: {
+      type: String,
       required: true,
     },
     bookUrl: {
@@ -116,6 +133,12 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
       },
       required: true,
     },
+    tags: [
+      {
+        type: String,
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

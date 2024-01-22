@@ -17,14 +17,19 @@ export type IEbook = {
   bookDescription: string;
   language: string;
   author: bookAuthor;
-  category: string;
+  category: string; //holds the category key for filter
+  categoryName: string;
   publicationYear: string;
   publisher: bookPublisher;
   version: string;
   price: number;
+  sold: number;
   bookUrl?: commonFileStore;
   coverImg?: commonFileStore;
   quickViewUrl?: commonFileStore;
+  page: string;
+  readTime: string;
+  tags?: string[];
 };
 
 export type EbookModel = Model<IEbook>;

@@ -4,6 +4,7 @@ export type IUserLogin = {
 };
 
 export type IUserLoginResponse = {
+  userData: any;
   accessToken: string;
   refreshToken?: string;
 };

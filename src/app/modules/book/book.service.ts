@@ -294,7 +294,7 @@ const createBook = async (
 
   if (newBookAllData) {
     newBookAllData = await Ebook.findOne({ _id: newBookAllData.id }).populate(
-      'author',
+      'author.author1',
     );
   }
 

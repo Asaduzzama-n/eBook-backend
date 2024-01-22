@@ -65,6 +65,7 @@ export const userSchema = new Schema<
         },
       },
     },
+    userBooks: [{ type: Schema.Types.ObjectId, ref: 'Ebook', select: 0 }],
   },
   {
     timestamps: true,

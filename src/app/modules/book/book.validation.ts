@@ -17,6 +17,9 @@ const createBookZodSchema = z.object({
     address: z.string({ required_error: 'Publisher Address is Required!' }),
   }),
   category: z.string({ required_error: 'Category is Required!' }),
+  categoryName: z.string({ required_error: 'Category name is Required!' }),
+  page: z.string({ required_error: 'Page length is Required!' }),
+  readTime: z.string({ required_error: 'Book reading time is Required!' }),
   publicationYear: z.string({
     required_error: 'Publication year is Required!',
   }),
@@ -25,6 +28,7 @@ const createBookZodSchema = z.object({
   bookUrl: z.string().optional(),
   coverImg: z.string().optional(),
   quickViewUrl: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 const updateBookZodSchema = z.object({

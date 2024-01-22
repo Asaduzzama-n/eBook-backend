@@ -16,6 +16,10 @@ export const authorSchema = new Schema<IAuthor>(
       },
       required: true,
     },
+    bio: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -25,9 +29,7 @@ export const authorSchema = new Schema<IAuthor>(
       type: String,
       required: true,
     },
-    bookPublished: {
-      type: String,
-    },
+    bookPublished: [{ type: Schema.Types.ObjectId, ref: 'Ebook' }],
     image: {
       _id: false,
       type: {

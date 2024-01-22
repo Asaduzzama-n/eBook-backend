@@ -37,7 +37,11 @@ router.patch(
   // BookController.updateBook,
 );
 
-router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.deleteBook);
+router.delete(
+  '/:id',
+  // auth(ENUM_USER_ROLE.ADMIN),
+  BookController.deleteBook,
+);
 
 router.post(
   '/',
@@ -61,8 +65,6 @@ router.post(
     );
     return BookController.createBook(req, res, next);
   },
-  // validateRequest(BookValidation.createBookZodSchema),
-  // BookController.createBook,
 );
 
 router.get('/', BookController.getAllBooks);

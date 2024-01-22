@@ -69,7 +69,13 @@ const loginUser = async (
     config.jwt.refresh_expires_in as string,
   );
 
+  const userData = await User.findOne(
+    { _id: isUserExist?._id },
+    { name: 1, email: 1, userBooks: 1, image: 1 },
+  );
+
   return {
+    userData,
     accessToken,
     refreshToken,
   };
@@ -131,6 +137,7 @@ const forgotPassword = async (email: string) => {
 
   await sendMail(
     email,
+    'Password reset link.',
     `
   <div>
   <p>Hi, ${isUserExist?.name.firstName}</p>

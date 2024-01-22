@@ -2,6 +2,11 @@ import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { sslService } from '../ssl/ssl.service';
 import { Payment } from './payment.model';
+import { sendMail } from '../auth/sendResetMail';
+import { sendInvoiceMail } from './sendInvoice';
+import mongoose from 'mongoose';
+import { Ebook } from '../book/book.model';
+import { User } from '../user/user.model';
 
 const getAllPayments = async () => {
   const result = await Payment.find({}).populate('books', { bookUrl: 1 });
@@ -28,7 +33,7 @@ const initPayment = async (data: any, id: string) => {
     cus_email: data.email,
     invoiceId: invoiceId,
   });
-  // console.log('DAta', data);
+  console.log('DAta', data);
   const order = {
     userId: id,
     transactionId: transactionId,
@@ -47,11 +52,45 @@ const initPayment = async (data: any, id: string) => {
 };
 
 const paymentSuccess = async (invoiceId: string) => {
-  const result = await Payment.findOneAndUpdate(
-    { invoiceId: invoiceId },
-    { $set: { paymentStatus: 'SUCCESS' } },
-    { new: true },
-  );
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const result = await Payment.findOneAndUpdate(
+      { invoiceId: invoiceId },
+      { $set: { paymentStatus: 'SUCCESS' } },
+      { new: true },
+    )
+      .populate('userId')
+      .populate('books');
+
+    await Ebook.updateMany(
+      { _id: { $in: result?.books } },
+      { $inc: { sold: 1 } },
+    );
+    const bookIds = result?.books.map(book => book._id);
+
+    await User.updateOne(
+      { _id: result?.userId._id },
+      { $push: { userBooks: { $each: bookIds } } },
+    );
+
+    if (!result) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'Failed to update payment status',
+      );
+    }
+
+    await sendInvoiceMail(result);
+
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
+  }
 
   return {
     message: 'Payment successful.',

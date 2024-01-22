@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 type userName = {
   firstName: string;
@@ -21,6 +21,7 @@ export type IUser = {
   image?: image;
   role: string;
   isSubscribe: true | false;
+  userBooks: Types.ObjectId[];
 };
 
 export interface IUserWithId extends IUser {

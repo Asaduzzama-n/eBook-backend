@@ -83,7 +83,7 @@ const updateAuthor = async (
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Author not found!');
   }
-  const { name, ...authorData } = payload;
+  const { name, bookPublished, ...authorData } = payload;
   const updatedAuthorData: Partial<IAuthor> = { ...authorData };
 
   let updatedAvatar;
@@ -100,6 +100,13 @@ const updateAuthor = async (
       updatedAvatar = await uploadToCloudinary(avatar?.path, 'users', 'image');
     }
     updatedAuthorData.image = updatedAvatar!;
+  }
+
+  if (bookPublished && bookPublished.length > 0) {
+    await Author.findOneAndUpdate(
+      { _id: id },
+      { $push: { bookPublished: { $each: bookPublished } } },
+    );
   }
 
   if (name && Object.keys(name).length > 0) {

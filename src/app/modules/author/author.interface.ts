@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 export type authorName = {
   firstName: string;
@@ -14,7 +14,7 @@ export type IAuthor = {
   email: string;
   bio: string;
   address: string;
-  bookPublished?: string;
+  bookPublished?: Types.ObjectId[];
   image?: authorImage;
 };
 

@@ -3,6 +3,7 @@ import ApiError from '../../../errors/ApiError';
 import { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 import {
+  IChangePassword,
   IRefreshTokenResponse,
   IUserLogin,
   IUserLoginResponse,
@@ -133,7 +134,8 @@ const forgotPassword = async (email: string) => {
   );
 
   const resetLink: string =
-    config.resetPassUiLink + `token=${passwordResetToken}`;
+    config.resetPassUiLink +
+    `email=${isUserExist.email}&token=${passwordResetToken}`;
 
   await sendMail(
     email,
@@ -175,10 +177,42 @@ const resetPassword = async (
   }
 };
 
+const changePassword = async (
+  user: any | null,
+  payload: IChangePassword,
+): Promise<void> => {
+  const { oldPassword, newPassword } = payload;
+
+  const userObj = new User();
+  const isUserExist = await userObj.isUserExists(user.email);
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+  }
+
+  // checking old password
+  if (
+    isUserExist.password &&
+    !(await userObj.isPasswordMatched(oldPassword, isUserExist.password))
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Old Password is incorrect');
+  }
+
+  const newHashedPassword = await bcrypt.hash(
+    newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  await User.updateOne(
+    { email: user?.email },
+    { $set: { password: newHashedPassword } },
+  );
+};
+
 export const AuthService = {
   createUser,
   loginUser,
   refreshToken,
   forgotPassword,
   resetPassword,
+  changePassword,
 };

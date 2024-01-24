@@ -22,7 +22,19 @@ const addToWishList = async (payload: IWishList): Promise<IWishList | null> => {
 };
 
 const getFromWishlist = async (id: string): Promise<IWishList[] | null> => {
-  const result = await WishList.find({ user: id });
+  const result = await WishList.find({ user: id }).populate('book', {
+    title: 1,
+    author: 1,
+    coverImg: 1,
+    quickViewUrl: 1,
+    price: 1,
+    sold: 1,
+    categoryName: 1,
+    id: 1,
+    page: 1,
+    isbn: 1,
+    tags: 1,
+  });
   if (!result) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,

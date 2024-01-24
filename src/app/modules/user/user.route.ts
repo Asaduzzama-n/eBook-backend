@@ -19,6 +19,12 @@ router.get(
   UserController.getUserPurchase,
 );
 
+router.get(
+  '/my-books',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  UserController.getUserBooks,
+);
+
 router.patch(
   '/my-profile',
   upload.single('avatar'),

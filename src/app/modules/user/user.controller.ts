@@ -16,6 +16,17 @@ const getUserPurchase = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getUserBooks = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.user!;
+  const result = await UserServices.getUserBooks(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User books retrieved successfully',
+    data: result,
+  });
+});
+
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const result = await UserServices.getSingleUser(id);
@@ -104,4 +115,5 @@ export const UserController = {
   getMyProfile,
   updateMyProfile,
   getUserPurchase,
+  getUserBooks,
 };

@@ -50,11 +50,30 @@ const getUserPurchase = async (id: string) => {
       contactNo: 1,
       address: 1,
     })
-    .populate('books', { title: 1, price: 1, coverImg: 1, bookUrl: 1 });
+    .populate('books', { title: 1, author: 1, coverImg: 1 });
   if (!result) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       'Failed to retrieved user purchase',
+    );
+  }
+  return result;
+};
+
+const getUserBooks = async (id: string) => {
+  const result = await User.findById(id, { userBooks: 1 })
+    .populate('userBooks', {
+      title: 1,
+      author: 1,
+      coverImg: 1,
+      bookUrl: 1,
+    })
+
+    .lean();
+  if (!result) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Failed to retrieved user books',
     );
   }
   return result;
@@ -176,4 +195,5 @@ export const UserServices = {
   getMyProfile,
   updateMyProfile,
   getUserPurchase,
+  getUserBooks,
 };

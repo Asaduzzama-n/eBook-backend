@@ -8,17 +8,17 @@ import { ENUM_USER_ROLE } from '../../../enum/user';
 const router = express.Router();
 router.get(
   '/:id',
-  auth(ENUM_USER_ROLE.USER),
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   WishlistController.getFromWishlist,
 );
 router.delete(
   '/',
-  auth(ENUM_USER_ROLE.USER),
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   WishlistController.deleteFromWishlist,
 );
 router.post(
   '/',
-  auth(ENUM_USER_ROLE.USER),
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   validateRequest(WishListValidation.addToWishListZodSchema),
   WishlistController.addToWishList,
 );

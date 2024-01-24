@@ -69,6 +69,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 const forgotPassword = catchAsync(async (req: Request, res: Response) => {
   const { email } = req.body;
+  console.log(email);
   const result = await AuthService.forgotPassword(email);
 
   sendResponse<IUserLoginResponse>(res, {
@@ -80,6 +81,7 @@ const forgotPassword = catchAsync(async (req: Request, res: Response) => {
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization || '';
+  console.log(req.body);
   await AuthService.resetPassword(req.body, token);
 
   sendResponse(res, {
@@ -89,10 +91,24 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const { ...passwordData } = req.body;
+
+  await AuthService.changePassword(user, passwordData);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Password changed successfully !',
+  });
+});
+
 export const AuthController = {
   resetPassword,
   createUser,
   loginUser,
   refreshToken,
   forgotPassword,
+  changePassword,
 };

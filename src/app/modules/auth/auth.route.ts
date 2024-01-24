@@ -3,6 +3,9 @@ import { AuthController } from './auth.controller';
 import validateRequest from '../../middleware/validateRequest';
 import { AuthValidation } from './auth.validation';
 
+import { ENUM_USER_ROLE } from '../../../enum/user';
+import { auth } from '../../middleware/auth';
+
 const router = express.Router();
 
 router.post(
@@ -23,5 +26,10 @@ router.post(
 
 router.post('/forgot-password', AuthController.forgotPassword);
 router.post('/reset-password', AuthController.resetPassword);
+router.post(
+  '/change-password',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
+  AuthController.changePassword,
+);
 
 export const AuthRoutes = router;

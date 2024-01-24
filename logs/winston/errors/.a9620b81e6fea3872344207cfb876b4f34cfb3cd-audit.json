@@ -414,6 +414,26 @@
             "date": 1706034703737,
             "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-24-00-error.log",
             "hash": "dd2457a946618bb29f7bb4ef6fc49c3b35456076f0388449c6efa229e8e2b596"
+        },
+        {
+            "date": 1706108508860,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-24-21-error.log",
+            "hash": "a557f49ce73751cd16d0820e009fa4bb9f523e4aef08665a5d7704c05af7fb6b"
+        },
+        {
+            "date": 1706118958372,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-24-23-error.log",
+            "hash": "513fc5b87ea1dfdee1dee8aa649f45259f79303a065f7cd682f01bed2ff11ba6"
+        },
+        {
+            "date": 1706119276525,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-25-00-error.log",
+            "hash": "fc4d5f8b6d499e03a03ac4958539e07aa69efb7ad5b593e27faf0a54e71136df"
+        },
+        {
+            "date": 1706123879022,
+            "name": "E:\\FYDP_PROJECT\\eBook-backend\\logs\\winston\\errors\\phu-2024-01-25-01-error.log",
+            "hash": "55d6f27d2236866dc2be22d20eabacc9df6c8b042cadbfb010264071b52e1bc0"
         }
     ],
     "hashType": "sha256"

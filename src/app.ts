@@ -9,9 +9,10 @@ import httpStatus from 'http-status';
 const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.options('*', cors());
 app.use(
   cors({
-    origin: 'https://versevoyage-91e8e-7ba99.web.app/',
+    origin: 'https://versevoyage-91e8e-7ba99.web.app',
     credentials: true,
   }),
 );

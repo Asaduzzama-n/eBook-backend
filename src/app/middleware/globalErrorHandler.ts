@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import config from '../../config';
-import { errorLogger } from '../../shared/logger';
+
 import { IGenericErrorMessage } from '../../interfaces/error';
 import handleValidationError from '../../errors/handleValidationError';
 import ApiError from '../../errors/ApiError';
@@ -16,7 +17,7 @@ const globalErrorHandler: ErrorRequestHandler = (
 ) => {
   config.env === 'development'
     ? console.log('Inside Global Error Handler🪐', error)
-    : errorLogger.error('Inside Global Error Handler🪐', error);
+    : console.log('Inside Global Error Handler🪐', error);
 
   let statusCode = 500;
   let message = 'Something wen wrong!';

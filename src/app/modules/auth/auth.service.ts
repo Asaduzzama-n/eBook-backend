@@ -5,10 +5,9 @@ import { User } from '../user/user.model';
 import {
   IChangePassword,
   IRefreshTokenResponse,
-  IUserLogin,
   IUserLoginResponse,
 } from './auth.interface';
-import jwt, { Secret } from 'jsonwebtoken';
+import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { jwtHelpers } from '../../../helper/jwtHelper';
 import { sendMail } from './sendResetMail';
@@ -165,14 +164,14 @@ const resetPassword = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exists!');
   }
 
-  const isVarified = jwtHelpers.verifyToken(token, config.jwt.secret as string);
+  const isVerified = jwtHelpers.verifyToken(token, config.jwt.secret as string);
 
   const password = await bcrypt.hash(
     newPassword,
     Number(config.bcrypt_salt_rounds),
   );
 
-  if (isVarified) {
+  if (isVerified) {
     await User.updateOne({ email: email }, { password });
   }
 };

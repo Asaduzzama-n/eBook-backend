@@ -1,7 +1,5 @@
-import { Schema, Types, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { EbookModel, IEbook } from './book.interface';
-import config from '../../../config';
-import bcrypt from 'bcrypt';
 
 const bookSchema = new Schema<IEbook, Record<string, never>>(
   {
@@ -91,7 +89,7 @@ const bookSchema = new Schema<IEbook, Record<string, never>>(
     },
     bookUrl: {
       _id: false,
-
+      select: 0,
       type: {
         publicId: {
           type: String,

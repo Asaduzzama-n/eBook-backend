@@ -9,7 +9,12 @@ import httpStatus from 'http-status';
 const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(
+  cors({
+    origin: 'https://versevoyage-91e8e-7ba99.web.app/',
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 
 app.use('/api/v1', router);
